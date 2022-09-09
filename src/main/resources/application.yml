@@ -1,0 +1,101 @@
+# 配置Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+      min-spare: 30
+    connection-timeout: 5000ms
+  port: 8080
+  servlet:
+    context-path: /emos-wx-api
+# 配置MySQL数据源
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource #阿里巴巴连接池
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver #jdbc驱动类路径
+      url: jdbc:mysql://localhost:3306/emos?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: fa221d
+      initial-size: 8
+      max-active: 16
+      min-idle: 8
+      max-wait: 60000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+  # 配置Redis
+  redis:
+    database: 0
+    host: 100.2.155.112
+    port: 6379
+    requirePass: fa221d
+    jedis:
+      pool:
+        max-active: 1000
+        max-wait: -1ms
+        max-idle: 16
+        min-idle: 8
+  # 配置MongonDB
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: emos
+      authentication-database: admin
+      username: admin
+      password: abc123456
+  # 配置SMTP邮箱
+  mail:
+    default-encoding: UTF-8
+    host: smtp.163.com
+    username: zsw961174314@163.com
+    password: PFSZPKGJFKYMKQOJ
+    from: zsw961174314@163.com
+    properties.mail.smtp.port: 465 #465或者994
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+
+# 配置MyBatis
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.example.emos.wx.db.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+# 配置日志输出
+logging:
+  level:
+    root: info
+    com.example.emos.wx.db.dao: warn
+  pattern:
+    console: "%d{HH:mm:ss}  %-5level  %msg%n"
+# emos设置
+emos:
+  # jwt令牌设置
+  jwt:
+    secret: abc123456 #密钥
+    expire: 5 #令牌过期时间(天)
+    cache-expire: 10 #令牌缓存时间(天数)
+  # 人脸识别设置
+  face:
+    createFaceModelUrl: http://175.178.131.4:3000/create_face_model
+    checkinUrl: http://175.178.131.4:3000/create_face_model
+  # 常用邮箱设置
+  email:
+    system: zsw961174314@163.com
+    hr: 961174314@qq.com
+  # 设置签到照片存放路径
+  image-folder: /root/emos/image
+  # Python人脸识别启动密钥
+  code: BAAA027A3E3259B8
+  recieveNotify: http://175.178.131.4:8080/emos-wx-api/meeting/recieveNotify
+# 工作流
+workflow:
+  url: http://175.178.131.4:9090/emos-workflow
+# 获取openId 微信小程序配置
+wx:
+  app-id: wx60e247b936462bbe
+  app-secret: d8f0e48d8a0a3fd640272c9719fe32b7
